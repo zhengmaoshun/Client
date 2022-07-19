@@ -15,7 +15,7 @@ module.exports = {
   //配置代理跨域
   devServer: {
     port: port,
-    open: true,
+    // open: true,
     overlay: {
       warnings: false,
       errors: true

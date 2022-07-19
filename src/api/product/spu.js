@@ -1,3 +1,3 @@
-//spu模块的接口函数
+import request from '@/utils/request';
 
-export const c = 300;
+export const a = 12;

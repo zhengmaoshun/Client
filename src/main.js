@@ -38,12 +38,14 @@ Vue.config.productionTip = false
 //引入三级分类组件定义为全局组件
 import Category from '@/components/Category';
 Vue.component(Category.name,Category);
+
 //引入全部的请求函数[用对象包含全部的请求函数]
 import ajax from '@/api/product'
+
 new Vue({
   beforeCreate() {
     //将全部的请求函数，挂载到Vue.prototype上，好处VC组件实例都可以使用这些请求函数
-    Vue.prototype.$ajax = ajax;
+    Vue.prototype.$API = ajax;
   },
   el: '#app',
   router,

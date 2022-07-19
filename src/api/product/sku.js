@@ -1,2 +1,7 @@
-//sku模块的接口函数
-export const d = 400;
+import request from '@/utils/request'
+
+const num = 110;
+
+export {
+  num
+}

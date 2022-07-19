@@ -47,65 +47,90 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect:'/dashboard',
+    redirect: '/dashboard',
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
       name: 'Dashboard',
       //路由元信息:设置侧边栏标题，与icon图标
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: {
+        title: '首页',
+        icon: 'dashboard'
+      }
     }]
   },
   //商品管理路由配置
   {
-     path:'/product',
-     component:Layout,
-     meta:{title:'商品管理',icon:'el-icon-zoom-in'},
-     //不关一级路由还是二级路由都需要命名，命名名字必须和老师一模一样的[菜单权限，通过name进行匹配的]
-     name:'Product',
-     //二级路由
-     children:[
-          {
-             //一定要注意,路径path单词都是小写的
-              path:'trademark',
-              component:()=>import('@/views/product/trademark'),
-              meta:{title:'品牌管理',icon:'el-icon-camera'},
-              name:'Trademark'
-          },
-          {
-            path:'attr',
-            component:()=>import('@/views/product/attr'),
-            meta:{title:'平台属性管理',icon:'el-icon-s-operation'},
-            name:'Attr'
+    path: '/product',
+    component: Layout,
+    meta: {
+      title: '商品管理',
+      icon: 'el-icon-zoom-in'
+    },
+    //不关一级路由还是二级路由都需要命名，命名名字必须和老师一模一样的[菜单权限，通过name进行匹配的]
+    name: 'Product',
+    //二级路由
+    children: [{
+        //一定要注意,路径path单词都是小写的
+        path: 'trademark',
+        component: () => import('@/views/product/trademark'),
+        meta: {
+          title: '品牌管理',
+          icon: 'el-icon-camera'
         },
-        {
-           path:'spu',
-           component:()=>import('@/views/product/spu'),
-           meta:{title:'spu管理',icon:'el-icon-s-marketing'},
-           name:'Spu'
+        name: 'Trademark'
+      },
+      {
+        path: 'attr',
+        component: () => import('@/views/product/attr'),
+        meta: {
+          title: '平台属性管理',
+          icon: 'el-icon-s-operation'
         },
-        {
-          path:'sku',
-          component:()=>import('@/views/product/sku'),
-          meta:{title:'sku管理',icon:'el-icon-view'},
-          name:'Sku'
+        name: 'Attr'
+      },
+      {
+        path: 'spu',
+        component: () => import('@/views/product/spu'),
+        meta: {
+          title: 'spu管理',
+          icon: 'el-icon-s-marketing'
         },
-        {
-          path:'test',
-          component:()=>import('@/views/product/test'),
-          meta:{title:'测试管理',icon:'el-icon-view'},
-          name:'ceshi'
-        }
-     ]
+        name: 'Spu'
+      },
+      {
+        path: 'sku',
+        component: () => import('@/views/product/sku'),
+        meta: {
+          title: 'sku管理',
+          icon: 'el-icon-view'
+        },
+        name: 'Sku'
+      },
+      {
+        path: 'test',
+        component: () => import('@/views/product/test'),
+        meta: {
+          title: '测试管理',
+          icon: 'el-icon-view'
+        },
+        name: 'ceshi'
+      }
+    ]
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
   }
-  ,
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 //进行路由配置
 const createRouter = () => new Router({
   //滚动条的滚动行为
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   //配置路由信息
   routes: constantRoutes
 })
@@ -117,8 +142,3 @@ export function resetRouter() {
   router.matcher = newRouter.matcher // reset router
 }
 export default router
-
-
-
-
-
