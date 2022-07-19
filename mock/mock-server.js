@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 const path = require('path')
 const Mock = require('mockjs')
-const Mock = require('')
 
 const mockDir = path.join(process.cwd(), 'mock')
 
