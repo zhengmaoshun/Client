@@ -26,7 +26,7 @@
 
     <!-- 对话框 -->
     <el-dialog :title="tmForm.id ? '修改品牌' : '添加品牌'" :visible.sync="isShowDialog">
-      <el-form :model="tmForm" style="width: 80%">
+      <el-form :model="tmForm" :rules="rules" ref="tmForm" style="width: 80%">
         <el-form-item label="品牌名称" label-width="100px" prop="tmName">
           <el-input v-model="tmForm.tmName" autocomplete="off"></el-input>
         </el-form-item>
@@ -63,6 +63,15 @@ export default {
         tmName: "",
         logoUrl: "",
       },
+      rules: {
+        tmName: [
+          { required: true, message: '请输入品牌名称', trigger: 'blur' },
+          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'change' }
+        ],
+        logoUrl: [
+          { required: true, message: '请选择要上传的图片', trigger: 'change' }
+        ],
+      }
     };
   },
   mounted() {
@@ -111,21 +120,29 @@ export default {
       }
       return isJPGOrPNG && isLt500K;
     },
-    async addOrUpdateTrademark() {
-      try {
-        let result = await this.$API.trademark.addAndUpdate(this.tmForm);
-        this.isShowDialog = false;
-        if (result.code == 200) {
-          this.$message.success(
-            this.tmForm.id ? "修改品牌数据成功" : "添加品牌数据成功"
-          );
-          this.getTrademarkList(this.tmForm.id ? this.page : 1);
+    addOrUpdateTrademark() {
+      this.$refs.tmForm.validate(async (valid,a) => {
+        console.log(valid,'valid')
+        console.log(a,'a')
+        if (valid) {
+          try {
+            let result = await this.$API.trademark.addAndUpdate(this.tmForm);
+            this.isShowDialog = false;
+            if (result.code == 200) {
+              this.$message.success(
+                this.tmForm.id ? "修改品牌数据成功" : "添加品牌数据成功"
+              );
+              this.getTrademarkList(this.tmForm.id ? this.page : 1);
+            }
+          } catch (error) {
+            this.$message.error(
+              this.tmForm.id ? "修改品牌数据失败" : "添加品牌数据失败"
+            );
+          }
+        } else {
+          return false;
         }
-      } catch (error) {
-        this.$message.error(
-          this.tmForm.id ? "修改品牌数据失败" : "添加品牌数据失败"
-        );
-      }
+      });
     },
     addTrademark() {
       this.isShowDialog = true;
@@ -153,7 +170,6 @@ export default {
                 message: '删除品牌数据成功'
               });
               // 如果删除的数据在当前页只有一条数据则返回上一页,否则留在当前页
-              console.log(this.trademarkList.length)
               this.getTrademarkList(this.trademarkList.length>1? this.page:this.page-1)
             }
           } catch (error) {
