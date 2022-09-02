@@ -36,8 +36,11 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 //引入三级分类组件定义为全局组件
-import Category from '@/components/Category';
-Vue.component(Category.name,Category);
+// import Category from '@/components/Category';
+// Vue.component(Category.name,Category);
+
+import Category from "@/components/Category"
+Vue.component('Category',Category)
 
 //引入全部的请求函数[用对象包含全部的请求函数]
 import ajax from '@/api/product'

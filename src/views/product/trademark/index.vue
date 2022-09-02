@@ -25,7 +25,7 @@
     </el-pagination>
 
     <!-- 对话框 -->
-    <el-dialog :title="tmForm.id ? '修改品牌' : '添加品牌'" :visible.sync="isShowDialog">
+    <el-dialog :before-close="aaa" :title="tmForm.id ? '修改品牌' : '添加品牌'" :visible.sync="isShowDialog">
       <el-form :model="tmForm" :rules="rules" ref="tmForm" style="width: 80%">
         <el-form-item label="品牌名称" label-width="100px" prop="tmName">
           <el-input v-model="tmForm.tmName" autocomplete="off"></el-input>
@@ -42,7 +42,7 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="isShowDialog = false">取 消</el-button>
+        <el-button @click="cancelSubmit">取 消</el-button>
         <el-button type="primary" @click="addOrUpdateTrademark">确 定</el-button>
       </div>
     </el-dialog>
@@ -50,9 +50,23 @@
 </template>
 
 <script>
+// function validatorTmName(rule, value, callback){
+//   if (value.length<2 || value.length>20) {
+//     callback(new Error("长度在2-20个字符"))
+//   } else {
+//     callback();
+//   }
+// };
 export default {
   name: "trademark",
   data() {
+    var validatorTmName = (rule, value, callback) => {
+      if (value.length<2 || value.length>20) {
+        callback(new Error("长度在2-20个字符"))
+      } else {
+        callback();
+      }
+    };
     return {
       page: 1,
       limit: 3,
@@ -66,7 +80,8 @@ export default {
       rules: {
         tmName: [
           { required: true, message: '请输入品牌名称', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'change' }
+          // { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'change' }
+          { validator:validatorTmName, trigger: 'change' }
         ],
         logoUrl: [
           { required: true, message: '请选择要上传的图片', trigger: 'change' }
@@ -78,6 +93,11 @@ export default {
     this.getTrademarkList();
   },
   methods: {
+    aaa(done){
+      done();
+      // 清空校验规则
+      this.$refs.tmForm.resetFields();
+    },
     async getTrademarkList(page = 1) {
       this.page = page;
       try {
@@ -121,9 +141,7 @@ export default {
       return isJPGOrPNG && isLt500K;
     },
     addOrUpdateTrademark() {
-      this.$refs.tmForm.validate(async (valid,a) => {
-        console.log(valid,'valid')
-        console.log(a,'a')
+      this.$refs.tmForm.validate(async (valid) => {
         if (valid) {
           try {
             let result = await this.$API.trademark.addAndUpdate(this.tmForm);
@@ -133,6 +151,8 @@ export default {
                 this.tmForm.id ? "修改品牌数据成功" : "添加品牌数据成功"
               );
               this.getTrademarkList(this.tmForm.id ? this.page : 1);
+              // 清空校验规则
+              this.$refs.tmForm.resetFields();
             }
           } catch (error) {
             this.$message.error(
@@ -185,6 +205,11 @@ export default {
             message:'已取消删除品牌数据'
           })
         });
+    },
+    cancelSubmit(){
+      this.isShowDialog = false;
+      // 清空校验规则
+      this.$refs.tmForm.resetFields();
     }
   },
 };
