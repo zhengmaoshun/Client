@@ -2,7 +2,7 @@ import request from "@/utils/request"
 
 export default {
 	// 删除某一个品牌的接口函数
-	delete(id){
+	deleteBrand(id){
 		return request.delete(`/admin/product/baseTrademark/remove/${id}`)
 	},
 
@@ -12,11 +12,26 @@ export default {
 	},
 
 	// 添加品牌与修改品牌
-	addAndUpdate(tradeMark){
+	// addAndUpdate(tradeMark){
+	// 	if(tradeMark.id){
+	// 		return request.put("/admin/product/baseTrademark/update",tradeMark)
+	// 	}else{
+	// 		return request.post("/admin/product/baseTradeMark/save",tradeMark)
+	// 	}
+	// }
+  addAndUpdate(tradeMark){
 		if(tradeMark.id){
-			return request.put(`/admin/product/baseTrademark/update/${tradeMark}`)
+			return request({
+        url:'/admin/product/baseTrademark/update',
+        method:'put',
+        data:tradeMark
+      })
 		}else{
-			return request.post(`/admin/product/baseTradeMark/save/${tradeMark}`)
+			return request({
+        url:'/admin/product/baseTrademark/save',
+        method:'post',
+        data:tradeMark
+      })
 		}
 	}
 }

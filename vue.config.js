@@ -14,8 +14,9 @@ module.exports = {
   productionSourceMap: false,
   //配置代理跨域
   devServer: {
+    hot:true,
     port: port,
-    // open: true,
+    open: true,
     overlay: {
       warnings: false,
       errors: true
