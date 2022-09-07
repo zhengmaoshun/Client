@@ -43,7 +43,7 @@ import Category from "@/components/Category"
 Vue.component('Category',Category)
 
 //引入全部的请求函数[用对象包含全部的请求函数]
-import ajax from '@/api/product'
+import ajax from '@/api'
 
 new Vue({
   beforeCreate() {
